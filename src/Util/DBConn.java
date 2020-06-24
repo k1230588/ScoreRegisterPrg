@@ -179,4 +179,31 @@ public class DBConn {
         }
         return list;
     }
+
+    public List<UserInfo> SearchUI(int sIO, UserInfo ui) {
+        List<UserInfo> list = new ArrayList();
+        List sqlList = new ArrayList();
+        String sql;
+
+        if (ui.getuID() == 0 && ui.getuName().equals("null")) {
+            System.out.print(ui.getuID() + "///" + ui.getuName());
+        }
+
+        switch (sIO) {
+//          　あいまい検索  
+            case 1:
+
+//            完全一致
+            case 0:
+                if (ui.getuID() != 0) {
+                    sqlList.add("sid = " + ui.getuID());
+                }
+            if (!ui.getuName().equals("null")) {
+                    sqlList.add("sid = " + ui.getuID());
+            }
+            default:
+        }
+
+        return null;
+    }
 }

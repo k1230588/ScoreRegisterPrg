@@ -190,7 +190,7 @@ public class StuInfoP extends javax.swing.JFrame {
 
         sTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null}
+
             },
             new String [] {
                 "語文", "英語", "数学", "歴史", "理科", "総得点"
@@ -215,17 +215,11 @@ public class StuInfoP extends javax.swing.JFrame {
         jScrollPane1.setViewportView(sTable);
         if (sTable.getColumnModel().getColumnCount() > 0) {
             sTable.getColumnModel().getColumn(0).setResizable(false);
-            sTable.getColumnModel().getColumn(0).setHeaderValue("語文");
             sTable.getColumnModel().getColumn(1).setResizable(false);
-            sTable.getColumnModel().getColumn(1).setHeaderValue("英語");
             sTable.getColumnModel().getColumn(2).setResizable(false);
-            sTable.getColumnModel().getColumn(2).setHeaderValue("数学");
             sTable.getColumnModel().getColumn(3).setResizable(false);
-            sTable.getColumnModel().getColumn(3).setHeaderValue("歴史");
             sTable.getColumnModel().getColumn(4).setResizable(false);
-            sTable.getColumnModel().getColumn(4).setHeaderValue("理科");
             sTable.getColumnModel().getColumn(5).setResizable(false);
-            sTable.getColumnModel().getColumn(5).setHeaderValue("総得点");
         }
 
         jLabel9.setFont(new java.awt.Font("新細明體", 1, 19)); // NOI18N
@@ -254,7 +248,6 @@ public class StuInfoP extends javax.swing.JFrame {
         });
 
         jLabel12.setForeground(new java.awt.Color(255, 0, 0));
-        jLabel12.setText("TEXT");
 
         jButton3.setText("ログアウト");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -331,8 +324,8 @@ public class StuInfoP extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel11)
                     .addComponent(jPasswordField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
-                .addComponent(jLabel12)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, 21, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
