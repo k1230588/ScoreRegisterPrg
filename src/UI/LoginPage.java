@@ -40,6 +40,7 @@ public class LoginPage extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         upassField = new javax.swing.JPasswordField();
+        jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMaximumSize(new java.awt.Dimension(500, 500));
@@ -72,6 +73,8 @@ public class LoginPage extends javax.swing.JFrame {
             }
         });
 
+        jLabel3.setForeground(new java.awt.Color(255, 0, 0));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -99,8 +102,11 @@ public class LoginPage extends javax.swing.JFrame {
                                 .addGap(40, 40, 40)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(uidField, javax.swing.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE)
-                                    .addComponent(upassField))))))
-                .addContainerGap(79, Short.MAX_VALUE))
+                                    .addComponent(upassField)))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(114, 114, 114)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(74, 74, 74))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -115,40 +121,67 @@ public class LoginPage extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(upassField, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(60, 60, 60)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(25, 25, 25)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(40, 40, 40))
+                .addContainerGap(46, Short.MAX_VALUE))
         );
 
         pack();
-        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         uidField.setText(null);
         upassField.setText(null);
+        jLabel3.setText(null);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        if (uidField.getText().isEmpty() || upassField.getText().isEmpty() ){
+            jLabel3.setText("IDとパスワードを入力してください");
+        return;
+    }
         UserInfo ui = new UserInfo();
         ui.setuID(Integer.parseInt(uidField.getText()));
         ui.setuPass(upassField.getText());
+        int Admin = 9;
 
         DBConn dbc = new DBConn();
         try {
             dbc.getDBC();
-            int a = dbc.userLogin(ui);
-            System.out.println(a);
+            Admin = dbc.userLogin(ui);
+            ui.setuAdmin(Admin);
             dbc.closeDBC();
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(LoginPage.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        
+        switch (Admin) {
+            case 0:
+                TeachInfoP infop0 = new TeachInfoP(ui);
+                this.dispose();
+                infop0.setVisible(true);
+                break;
+            case 1:
+                TeachInfoP infop1 = new TeachInfoP(ui);
+                this.dispose();
+                infop1.setVisible(true);
+                break;
+            case 2:
+                StuInfoP infop2 = new StuInfoP(ui);
+                this.dispose();
+                infop2.setVisible(true);
+                break;
+            case 9:
+                jLabel3.setText("ユーザID、パスワードの入力に誤りがあります");
 
-
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
@@ -191,6 +224,7 @@ public class LoginPage extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JTextField uidField;
     private javax.swing.JPasswordField upassField;

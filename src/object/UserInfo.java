@@ -10,6 +10,7 @@ package object;
  * @author user
  */
 public class UserInfo {
+
     public int uID;
     public String uName;
     public String uPass;
@@ -67,14 +68,14 @@ public class UserInfo {
         this.uAdmin = uAdmin;
     }
     public int uAdmin;
-    
-    public UserInfo(int uID, String uName, String uPass, int uClass, String uPosi){
+
+    public UserInfo(int uID, String uName, String uPass, int uClass, String uPosi) {
         this.uID = uID;
         this.uName = uName;
         this.uPass = uPass;
         this.uClass = uClass;
         this.uPosi = uPosi;
-        switch (uPosi){
+        switch (uPosi) {
             case "学生":
                 this.uAdmin = 2;
                 break;
@@ -87,8 +88,7 @@ public class UserInfo {
             default:
                 this.uAdmin = 3;
         }
-        
-        
+
     }
-            
+
 }
