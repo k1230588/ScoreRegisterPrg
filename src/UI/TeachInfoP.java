@@ -251,6 +251,11 @@ public class TeachInfoP extends javax.swing.JFrame {
         });
 
         jButton4.setText("リセット");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         jLabel12.setFont(new java.awt.Font("新細明體", 1, 19)); // NOI18N
         jLabel12.setText("成績登録");
@@ -339,6 +344,11 @@ public class TeachInfoP extends javax.swing.JFrame {
         jButton5.setText("登録");
 
         jButton6.setText("リセット");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
 
         listTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -386,12 +396,22 @@ public class TeachInfoP extends javax.swing.JFrame {
         }
 
         jButton7.setText("削除");
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
 
         jButton8.setText("編集");
 
         jButton9.setText("再読込");
+        jButton9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton9ActionPerformed(evt);
+            }
+        });
 
-        searchM.setFont(new java.awt.Font("微軟正黑體", 0, 14)); // NOI18N
+        searchM.setFont(new java.awt.Font("微軟正黑體", 0, 10)); // NOI18N
         searchM.setForeground(new java.awt.Color(255, 0, 0));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -521,8 +541,7 @@ public class TeachInfoP extends javax.swing.JFrame {
                         .addGap(13, 13, 13)
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(10, 10, 10)
-                        .addComponent(registerM, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, 0))
+                        .addComponent(registerM, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 379, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -533,8 +552,6 @@ public class TeachInfoP extends javax.swing.JFrame {
                     .addComponent(jButton9))
                 .addContainerGap(33, Short.MAX_VALUE))
         );
-
-        registerM.getAccessibleContext().setAccessibleName("");
 
         pack();
         setLocationRelativeTo(null);
@@ -554,8 +571,9 @@ public class TeachInfoP extends javax.swing.JFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
         UserInfo ui = new UserInfo();
-        List<UserInfo> list = new ArrayList();
+        List<UserScore> list = new ArrayList();
         int sIO;
+        int ruiclass = gRUserI().getuClass();
 
         if (!jTextField1.getText().isEmpty()) {
             ui.setuID(Integer.parseInt(jTextField1.getText()));
@@ -564,6 +582,12 @@ public class TeachInfoP extends javax.swing.JFrame {
             ui.setuName(jTextField2.getText());
         } else {
             ui.setuName("null");
+        }
+        if (jTextField1.getText().isEmpty() && jTextField2.getText().isEmpty()) {
+            searchM.setText("Error: No content");
+            UserInfo rui = gRUserI();
+            sList(rui);
+            return;
         }
 
         if (jCheckBox1.isSelected()) {
@@ -575,13 +599,99 @@ public class TeachInfoP extends javax.swing.JFrame {
         DBConn dbc = new DBConn();
         try {
             dbc.getDBC();
-            dbc.SearchUI(sIO, ui);
+            list = dbc.SearchUI(sIO, ui, uAdmin, ruiclass);
             dbc.closeDBC();
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(TeachInfoP.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        DefaultTableModel model = (DefaultTableModel) listTable.getModel();
+        if (listTable.getRowCount() > 0) {
+            for (int j = listTable.getRowCount(); j > 0; j--) {
+                model.removeRow(0);
+            }
+        }
+        if (!list.isEmpty()) {
+            for (int i = 0; i < list.size(); i++) {
+                model.addRow(new Object[]{list.get(i).getsID(), list.get(i).getsClass(), list.get(i).getsName(), list.get(i).getLanS(),
+                    list.get(i).getEngS(), list.get(i).getMatS(), list.get(i).getHisS(), list.get(i).getSciS()});
+                int k = list.get(i).getLanS() + list.get(i).getEngS() + list.get(i).getMatS() + list.get(i).getHisS() + list.get(i).getSciS();
+                model.setValueAt(k, i, 8);
+            }
+        }
+        searchM.setText(null);
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+        jTextField1.setText(null);
+        jTextField2.setText(null);
+        searchM.setText(null);
+        jCheckBox1.setSelected(false);
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
+        // TODO add your handling code here: 
+        UserInfo rui = gRUserI();
+        sList(rui);
+    }//GEN-LAST:event_jButton9ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        // TODO add your handling code here:
+        jTextField3.setText(null);
+        jTextField4.setText(null);
+        jTextField5.setText(null);
+        jTextField6.setText(null);
+        jTextField7.setText(null);
+        jTextField8.setText(null);
+        registerM.setText(null);
+    }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        // TODO add your handling code here:
+        int i = listTable.getSelectedRow();
+        DBConn dbc = new DBConn();
+        DefaultTableModel model = (DefaultTableModel) listTable.getModel();
+        int DeleteL;
+
+        if (i != -1) {
+            DeleteL = (int) model.getValueAt(i, 0);
+
+            try {
+                dbc.getDBC();
+                dbc.DScore(DeleteL);
+                dbc.closeDBC();
+            } catch (ClassNotFoundException | SQLException ex) {
+                Logger.getLogger(TeachInfoP.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            model.removeRow(i);
+            registerM.setText(null);
+
+        } else {
+            registerM.setText("No row selected.");
+
+        }
+    }//GEN-LAST:event_jButton7ActionPerformed
+
+    public UserInfo gRUserI() {
+        UserInfo rui = new UserInfo();
+        List<UserInfo> list = new ArrayList();
+        DBConn dbc = new DBConn();
+
+        rui.setuID(Integer.parseInt(jLabel6.getText()));
+        try {
+            dbc.getDBC();
+            list = dbc.getLoginInfo(rui.getuID());
+            rui.setuClass(list.get(0).getuClass());
+            rui.setuAdmin(list.get(0).getuAdmin());
+            dbc.closeDBC();
+        } catch (SQLException ex) {
+            Logger.getLogger(TeachInfoP.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(TeachInfoP.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return rui;
+    }
 
     /**
      * @param args the command line arguments

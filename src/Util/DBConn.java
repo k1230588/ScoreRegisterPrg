@@ -148,8 +148,8 @@ public class DBConn {
 
         List<UserScore> list = new ArrayList();
         String sql;
-        System.out.println(uclass);
-        System.out.println(uadmin);
+//        System.out.println(uclass);
+//        System.out.println(uadmin);
         switch (uadmin) {
             case 1:
                 sql = "select * from scorelist left join stulist on scorelist.sid = stulist.sid where sclass = " + uclass + ";";
@@ -180,30 +180,70 @@ public class DBConn {
         return list;
     }
 
-    public List<UserInfo> SearchUI(int sIO, UserInfo ui) {
-        List<UserInfo> list = new ArrayList();
+    public List<UserScore> SearchUI(int sIO, UserInfo ui, int uAdmin, int ruiclass) throws SQLException {
+        List<UserScore> list = new ArrayList();
         List sqlList = new ArrayList();
         String sql;
 
-        if (ui.getuID() == 0 && ui.getuName().equals("null")) {
-            System.out.print(ui.getuID() + "///" + ui.getuName());
-        }
 
         switch (sIO) {
 //          　あいまい検索  
             case 1:
-
+                if (ui.getuID() != 0) {
+                    sqlList.add("cast(scorelist.sid as varchar(255)) like '%" + ui.getuID() + "%' ");
+                }
+                if (!ui.getuName().equals("null")) {
+                    sqlList.add("sname like '%" + ui.getuName() + "%' ");
+                }
+                break;
 //            完全一致
             case 0:
                 if (ui.getuID() != 0) {
-                    sqlList.add("sid = " + ui.getuID());
+                    sqlList.add("scorelist.sid = " + ui.getuID() + " ");
                 }
-            if (!ui.getuName().equals("null")) {
-                    sqlList.add("sid = " + ui.getuID());
-            }
+                if (!ui.getuName().equals("null")) {
+                    sqlList.add("sname = '" + ui.getuName() + "' ");
+                }
+                break;
             default:
+                return null;
+        }
+//        SQL命令作成
+        sql = "select scorelist.sid,sclass ,sname ,language, math, english, history, science from scorelist left join stulist on scorelist.sid = stulist.sid where ";
+        sql += sqlList.get(0);
+        if (sqlList.size() > 1) {
+            for (int i = 1; i < sqlList.size(); i++) {
+                sql += "and " + sqlList.get(i);
+            }
+        }
+        if (uAdmin == 0){
+        sql += ";";
+        } else {
+            sql += "and sclass = " + ruiclass + ";";
+        }
+        System.out.println(sql);
+        rset = stmt.executeQuery(sql);
+        if (rset != null) {
+            while (rset.next()) {
+                UserScore usc = new UserScore();
+                usc.setsID(rset.getInt("sid"));
+                usc.setsClass(rset.getInt("sclass"));
+                usc.setsName(rset.getString("sname"));
+                usc.setLanS(rset.getInt("language"));
+                usc.setEngS(rset.getInt("english"));
+                usc.setMatS(rset.getInt("math"));
+                usc.setHisS(rset.getInt("history"));
+                usc.setSciS(rset.getInt("science"));
+                list.add(usc);
+            }
         }
 
-        return null;
+        return list;
+    }
+    
+    public void DScore(int DeleteL) throws SQLException {
+        String sql = "delete from scorelist where sid = " + DeleteL + ";";
+        stmt.executeUpdate(sql);
+        conn.commit();
     }
 }

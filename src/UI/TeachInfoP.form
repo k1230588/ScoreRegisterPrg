@@ -186,7 +186,6 @@
                       <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
                       <Component id="registerM" min="-2" pref="20" max="-2" attributes="0"/>
-                      <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
                   </Group>
                   <Component id="jScrollPane1" min="-2" pref="379" max="-2" attributes="0"/>
               </Group>
@@ -390,6 +389,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="&#x30ea;&#x30bb;&#x30c3;&#x30c8;"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton4ActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel12">
       <Properties>
@@ -571,6 +573,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="&#x30ea;&#x30bb;&#x30c3;&#x30c8;"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton6ActionPerformed"/>
+      </Events>
     </Component>
     <Container class="javax.swing.JScrollPane" name="jScrollPane1">
       <AuxValues>
@@ -654,6 +659,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="&#x524a;&#x9664;"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton7ActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="jButton8">
       <Properties>
@@ -664,11 +672,14 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="&#x518d;&#x8aad;&#x8fbc;"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton9ActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="searchM">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="&#x5fae;&#x8edf;&#x6b63;&#x9ed1;&#x9ad4;" size="14" style="0"/>
+          <Font name="&#x5fae;&#x8edf;&#x6b63;&#x9ed1;&#x9ad4;" size="10" style="0"/>
         </Property>
         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="0" green="0" red="ff" type="rgb"/>
@@ -676,9 +687,6 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="registerM">
-      <AccessibilityProperties>
-        <Property name="AccessibleContext.accessibleName" type="java.lang.String" value=""/>
-      </AccessibilityProperties>
     </Component>
   </SubComponents>
 </Form>
