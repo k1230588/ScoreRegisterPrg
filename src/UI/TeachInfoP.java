@@ -24,6 +24,7 @@ public class TeachInfoP extends javax.swing.JFrame {
     int Admin;
     int uID;
     int uAdmin;
+    TeachInfoP tip = this;
 
     /**
      * Creates new form TeachInfoP
@@ -33,9 +34,9 @@ public class TeachInfoP extends javax.swing.JFrame {
     }
 
     public TeachInfoP(UserInfo rui) {
-        List<UserInfo> list = new ArrayList();
-        DBConn dbc = new DBConn();
         initComponents();
+        List<UserInfo> list = new ArrayList();
+        DBConn dbc = new DBConn();   
         this.uID = rui.getuID();
 
         try {
@@ -85,9 +86,9 @@ public class TeachInfoP extends javax.swing.JFrame {
             }
 
             for (int i = 0; i < list.size(); i++) {
-                model.addRow(new Object[]{list.get(i).getsID(), list.get(i).getsClass(), list.get(i).getsName(), list.get(i).getLanS(), list.get(i).getEngS(), list.get(i).getMatS(), list.get(i).getHisS(), list.get(i).getSciS()});
                 int k = list.get(i).getLanS() + list.get(i).getEngS() + list.get(i).getMatS() + list.get(i).getHisS() + list.get(i).getSciS();
-                model.setValueAt(k, i, 8);
+                model.addRow(new Object[]{list.get(i).getsID(), list.get(i).getsClass(), list.get(i).getsName(), list.get(i).getLanS(),
+                    list.get(i).getEngS(), list.get(i).getMatS(), list.get(i).getHisS(), list.get(i).getSciS(), k, list.get(i).getScid()});
             }
         }
     }
@@ -130,11 +131,11 @@ public class TeachInfoP extends javax.swing.JFrame {
         jLabel17 = new javax.swing.JLabel();
         jLabel18 = new javax.swing.JLabel();
         jLabel19 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
-        jTextField5 = new javax.swing.JTextField();
-        jTextField6 = new javax.swing.JTextField();
-        jTextField7 = new javax.swing.JTextField();
-        jTextField8 = new javax.swing.JTextField();
+        lans = new javax.swing.JTextField();
+        engs = new javax.swing.JTextField();
+        mats = new javax.swing.JTextField();
+        hiss = new javax.swing.JTextField();
+        scis = new javax.swing.JTextField();
         jButton5 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -263,6 +264,12 @@ public class TeachInfoP extends javax.swing.JFrame {
         jLabel13.setFont(new java.awt.Font("新細明體", 0, 14)); // NOI18N
         jLabel13.setText("あいまい検索");
 
+        jTextField3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField3ActionPerformed(evt);
+            }
+        });
+
         jLabel14.setFont(new java.awt.Font("新細明體", 0, 14)); // NOI18N
         jLabel14.setText("ID");
 
@@ -284,15 +291,15 @@ public class TeachInfoP extends javax.swing.JFrame {
         jLabel19.setFont(new java.awt.Font("新細明體", 0, 14)); // NOI18N
         jLabel19.setText("理科");
 
-        jTextField4.setFont(new java.awt.Font("新細明體", 0, 14)); // NOI18N
+        lans.setFont(new java.awt.Font("新細明體", 0, 14)); // NOI18N
 
-        jTextField5.setFont(new java.awt.Font("新細明體", 0, 14)); // NOI18N
+        engs.setFont(new java.awt.Font("新細明體", 0, 14)); // NOI18N
 
-        jTextField6.setFont(new java.awt.Font("新細明體", 0, 14)); // NOI18N
+        mats.setFont(new java.awt.Font("新細明體", 0, 14)); // NOI18N
 
-        jTextField7.setFont(new java.awt.Font("新細明體", 0, 14)); // NOI18N
+        hiss.setFont(new java.awt.Font("新細明體", 0, 14)); // NOI18N
 
-        jTextField8.setFont(new java.awt.Font("新細明體", 0, 14)); // NOI18N
+        scis.setFont(new java.awt.Font("新細明體", 0, 14)); // NOI18N
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -301,24 +308,24 @@ public class TeachInfoP extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap(15, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jTextField4)
+                    .addComponent(lans)
                     .addComponent(jLabel15, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE))
                 .addGap(12, 12, 12)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jTextField5)
+                    .addComponent(engs)
                     .addComponent(jLabel16, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE))
                 .addGap(12, 12, 12)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField6))
+                    .addComponent(mats))
                 .addGap(12, 12, 12)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField7))
+                    .addComponent(hiss))
                 .addGap(12, 12, 12)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField8))
+                    .addComponent(scis))
                 .addGap(15, 15, 15))
         );
         jPanel2Layout.setVerticalGroup(
@@ -333,15 +340,20 @@ public class TeachInfoP extends javax.swing.JFrame {
                     .addComponent(jLabel19))
                 .addGap(8, 8, 8)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lans, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(engs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(mats, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(hiss, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(scis, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(8, 8, 8))
         );
 
         jButton5.setText("登録");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
 
         jButton6.setText("リセット");
         jButton6.addActionListener(new java.awt.event.ActionListener() {
@@ -355,14 +367,14 @@ public class TeachInfoP extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID", "クラス", "名前", "語文", "英語", "数学", "歴史", "理科", "トータル"
+                "ID", "クラス", "名前", "語文", "英語", "数学", "歴史", "理科", "トータル", "scid"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class
+                java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -393,6 +405,8 @@ public class TeachInfoP extends javax.swing.JFrame {
             listTable.getColumnModel().getColumn(7).setResizable(false);
             listTable.getColumnModel().getColumn(7).setPreferredWidth(50);
             listTable.getColumnModel().getColumn(8).setResizable(false);
+            listTable.getColumnModel().getColumn(9).setResizable(false);
+            listTable.getColumnModel().getColumn(9).setPreferredWidth(40);
         }
 
         jButton7.setText("削除");
@@ -403,6 +417,11 @@ public class TeachInfoP extends javax.swing.JFrame {
         });
 
         jButton8.setText("編集");
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton8ActionPerformed(evt);
+            }
+        });
 
         jButton9.setText("再読込");
         jButton9.addActionListener(new java.awt.event.ActionListener() {
@@ -413,6 +432,8 @@ public class TeachInfoP extends javax.swing.JFrame {
 
         searchM.setFont(new java.awt.Font("微軟正黑體", 0, 10)); // NOI18N
         searchM.setForeground(new java.awt.Color(255, 0, 0));
+
+        registerM.setForeground(new java.awt.Color(255, 0, 0));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -612,10 +633,10 @@ public class TeachInfoP extends javax.swing.JFrame {
         }
         if (!list.isEmpty()) {
             for (int i = 0; i < list.size(); i++) {
-                model.addRow(new Object[]{list.get(i).getsID(), list.get(i).getsClass(), list.get(i).getsName(), list.get(i).getLanS(),
-                    list.get(i).getEngS(), list.get(i).getMatS(), list.get(i).getHisS(), list.get(i).getSciS()});
                 int k = list.get(i).getLanS() + list.get(i).getEngS() + list.get(i).getMatS() + list.get(i).getHisS() + list.get(i).getSciS();
-                model.setValueAt(k, i, 8);
+                model.addRow(new Object[]{list.get(i).getsID(), list.get(i).getsClass(), list.get(i).getsName(), list.get(i).getLanS(),
+                    list.get(i).getEngS(), list.get(i).getMatS(), list.get(i).getHisS(), list.get(i).getSciS(), k, list.get(i).getScid()});
+
             }
         }
         searchM.setText(null);
@@ -638,11 +659,11 @@ public class TeachInfoP extends javax.swing.JFrame {
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         // TODO add your handling code here:
         jTextField3.setText(null);
-        jTextField4.setText(null);
-        jTextField5.setText(null);
-        jTextField6.setText(null);
-        jTextField7.setText(null);
-        jTextField8.setText(null);
+        lans.setText(null);
+        engs.setText(null);
+        mats.setText(null);
+        hiss.setText(null);
+        scis.setText(null);
         registerM.setText(null);
     }//GEN-LAST:event_jButton6ActionPerformed
 
@@ -651,10 +672,10 @@ public class TeachInfoP extends javax.swing.JFrame {
         int i = listTable.getSelectedRow();
         DBConn dbc = new DBConn();
         DefaultTableModel model = (DefaultTableModel) listTable.getModel();
-        int DeleteL;
+        long DeleteL;
 
         if (i != -1) {
-            DeleteL = (int) model.getValueAt(i, 0);
+            DeleteL = (long) model.getValueAt(i, 9);
 
             try {
                 dbc.getDBC();
@@ -672,6 +693,61 @@ public class TeachInfoP extends javax.swing.JFrame {
 
         }
     }//GEN-LAST:event_jButton7ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        // TODO add your handling code here:
+        UserInfo rui = gRUserI();
+        UserScore usc = new UserScore();
+        DBConn dbc = new DBConn();
+
+        usc.setsID(Integer.parseInt(jTextField3.getText()));
+        usc.setLanS(Integer.parseInt(lans.getText()));
+        usc.setEngS(Integer.parseInt(engs.getText()));
+        usc.setMatS(Integer.parseInt(mats.getText()));
+        usc.setHisS(Integer.parseInt(hiss.getText()));
+        usc.setSciS(Integer.parseInt(scis.getText()));
+
+        try {
+            dbc.getDBC();
+            String rScore = dbc.RScore(usc, rui);
+            sList(rui);
+            dbc.closeDBC();
+            registerM.setText(rScore);
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(TeachInfoP.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField3ActionPerformed
+
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+        // TODO add your handling code here:
+        int i = listTable.getSelectedRow();
+        this.tip = tip;
+        UserScore usc = new UserScore();
+        DefaultTableModel model = (DefaultTableModel) listTable.getModel();
+        if (i != -1) {
+            usc.setsID((int) model.getValueAt(i, 0));
+            usc.setsClass((int) model.getValueAt(i, 1));
+            usc.setsName((String) model.getValueAt(i, 2));
+            usc.setLanS((int) model.getValueAt(i, 3));
+            usc.setEngS((int) model.getValueAt(i, 4));
+            usc.setMatS((int) model.getValueAt(i, 5));
+            usc.setHisS((int) model.getValueAt(i, 6));
+            usc.setSciS((int) model.getValueAt(i, 7));
+            usc.setScid((long) model.getValueAt(i, 9));
+            EditScoreP esp = new EditScoreP(usc, tip);
+                esp.setVisible(true);
+                this.setEnabled(false);
+        } else {
+            registerM.setText("Row not selected.");
+        }
+        
+    }//GEN-LAST:event_jButton8ActionPerformed
 
     public UserInfo gRUserI() {
         UserInfo rui = new UserInfo();
@@ -691,6 +767,11 @@ public class TeachInfoP extends javax.swing.JFrame {
             Logger.getLogger(TeachInfoP.class.getName()).log(Level.SEVERE, null, ex);
         }
         return rui;
+    }
+    
+    public void endEdit(){
+        UserInfo rui = gRUserI();
+        sList(rui);
     }
 
     /**
@@ -729,6 +810,8 @@ public class TeachInfoP extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField engs;
+    private javax.swing.JTextField hiss;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -764,13 +847,11 @@ public class TeachInfoP extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
-    private javax.swing.JTextField jTextField7;
-    private javax.swing.JTextField jTextField8;
+    private javax.swing.JTextField lans;
     private javax.swing.JTable listTable;
+    private javax.swing.JTextField mats;
     private javax.swing.JLabel registerM;
+    private javax.swing.JTextField scis;
     private javax.swing.JLabel searchM;
     // End of variables declaration//GEN-END:variables
 }

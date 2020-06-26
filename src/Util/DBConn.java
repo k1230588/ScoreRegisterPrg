@@ -10,7 +10,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import object.UserInfo;
 import object.UserScore;
@@ -161,20 +163,21 @@ public class DBConn {
                 sql = "select * from scorelist left join stulist on scorelist.sid = stulist.sid where sclass = " + uclass + ";";
                 break;
         }
-        System.out.println(sql);
+//        System.out.println(sql);
         rset = stmt.executeQuery(sql);
         if (rset != null) {
             while (rset.next()) {
-                UserScore us = new UserScore();
-                us.setsID(rset.getInt("sid"));
-                us.setsClass(rset.getInt("sclass"));
-                us.setsName(rset.getString("sname"));
-                us.setLanS(rset.getInt("language"));
-                us.setEngS(rset.getInt("english"));
-                us.setMatS(rset.getInt("math"));
-                us.setHisS(rset.getInt("history"));
-                us.setSciS(rset.getInt("science"));
-                list.add(us);
+                UserScore usc = new UserScore();
+                usc.setsID(rset.getInt("sid"));
+                usc.setsClass(rset.getInt("sclass"));
+                usc.setsName(rset.getString("sname"));
+                usc.setLanS(rset.getInt("language"));
+                usc.setEngS(rset.getInt("english"));
+                usc.setMatS(rset.getInt("math"));
+                usc.setHisS(rset.getInt("history"));
+                usc.setSciS(rset.getInt("science"));
+                usc.setScid(rset.getLong("scid"));
+                list.add(usc);
             }
         }
         return list;
@@ -184,7 +187,6 @@ public class DBConn {
         List<UserScore> list = new ArrayList();
         List sqlList = new ArrayList();
         String sql;
-
 
         switch (sIO) {
 //          　あいまい検索  
@@ -209,19 +211,19 @@ public class DBConn {
                 return null;
         }
 //        SQL命令作成
-        sql = "select scorelist.sid,sclass ,sname ,language, math, english, history, science from scorelist left join stulist on scorelist.sid = stulist.sid where ";
+        sql = "select scorelist.sid,sclass ,sname ,language, math, english, history, science, scid from scorelist left join stulist on scorelist.sid = stulist.sid where ";
         sql += sqlList.get(0);
         if (sqlList.size() > 1) {
             for (int i = 1; i < sqlList.size(); i++) {
                 sql += "and " + sqlList.get(i);
             }
         }
-        if (uAdmin == 0){
-        sql += ";";
+        if (uAdmin == 0) {
+            sql += ";";
         } else {
             sql += "and sclass = " + ruiclass + ";";
         }
-        System.out.println(sql);
+//        System.out.println(sql);
         rset = stmt.executeQuery(sql);
         if (rset != null) {
             while (rset.next()) {
@@ -234,16 +236,73 @@ public class DBConn {
                 usc.setMatS(rset.getInt("math"));
                 usc.setHisS(rset.getInt("history"));
                 usc.setSciS(rset.getInt("science"));
+                usc.setScid(rset.getLong("scid"));
                 list.add(usc);
             }
         }
 
         return list;
     }
-    
-    public void DScore(int DeleteL) throws SQLException {
-        String sql = "delete from scorelist where sid = " + DeleteL + ";";
+
+    public void DScore(long DeleteL) throws SQLException {
+        String sql = "delete from scorelist where scid = " + DeleteL + ";";
         stmt.executeUpdate(sql);
         conn.commit();
+    }
+
+    public String RScore(UserScore usscore, UserInfo rui) throws SQLException {
+        int uAdmin = rui.getuAdmin();
+        int ssid = usscore.getsID();
+        UserInfo sui = new UserInfo();
+        String rScore;
+        // scid作成
+        SimpleDateFormat sdt = new SimpleDateFormat("yyyyMMddhhmmss");
+        Date date = new Date(System.currentTimeMillis());
+        String scid = usscore.getsID() + String.valueOf(sdt.format(date));
+        usscore.setScid(Long.parseLong(scid));
+
+        String sql = "select * from ulist where uid = " + ssid + " and uadmin = 2;";
+        System.out.println(sql);
+        rset = stmt.executeQuery(sql);
+        if (rset != null) {
+            while (rset.next()) {
+                sui.setuClass(rset.getInt("uclass"));
+                sui.setuID(rset.getInt("uid"));
+                sui.setuName(rset.getString("uname"));
+            }
+        }
+
+//        入力したUID存在するか
+        if (sui.getuID() != usscore.getsID()) {
+            rScore = "Student not exist";
+            return rScore;
+        }
+//       登録者が権限を持っているか
+        if (uAdmin == 1) {
+            if (rui.getuClass() != sui.getuClass()) {
+                rScore = "No permisson to register";
+                return rScore;
+            }
+        }
+        
+//        スコアを登録する
+        sql = "insert into scorelist (sid, language, english, math, history, science, create_time, scid)";
+        sql += "VALUES (" + usscore.getsID() + "," + usscore.getLanS() + "," + usscore.getEngS() + ",";
+        sql += usscore.getMatS() + "," + usscore.getHisS() + "," + usscore.getSciS() + ",";
+        sql += "current_timestamp, " + usscore.getScid() + ");";
+        System.out.println(sql);
+        
+        stmt.executeUpdate(sql);
+        conn.commit();
+        
+        
+
+        rScore = "Finished";
+        return rScore;
+    }
+    
+    public void EScore(UserScore sc){
+
+        
     }
 }

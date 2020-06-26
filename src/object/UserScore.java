@@ -17,6 +17,15 @@ public class UserScore {
     public int sClass;
     public String sName;
     public int sID;
+    public long scid;
+
+    public long getScid() {
+        return scid;
+    }
+
+    public void setScid(long scid) {
+        this.scid = scid;
+    }
 
     public int getsClass() {
         return sClass;
