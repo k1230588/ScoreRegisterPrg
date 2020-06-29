@@ -6,6 +6,9 @@
 package UI;
 
 import Util.DBConn;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import object.UserScore;
 
 /**
@@ -13,6 +16,7 @@ import object.UserScore;
  * @author user
  */
 public class EditScoreP extends javax.swing.JFrame {
+
     UserScore usc;
     TeachInfoP tip;
 
@@ -228,10 +232,11 @@ public class EditScoreP extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+        int i = 0;
         tip.setEnabled(true);
-        tip.endEdit();
+        tip.endEdit(i);
         this.dispose();
-        
+
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -246,15 +251,19 @@ public class EditScoreP extends javax.swing.JFrame {
         sc.setMatS(Integer.parseInt(jTextField3.getText()));
         sc.setHisS(Integer.parseInt(jTextField4.getText()));
         sc.setSciS(Integer.parseInt(jTextField5.getText()));
-        
+        sc.setScid(Integer.parseInt(jLabel13.getText()));
 
-        dbc.getDBC();
-        dbc.EScore(sc);
-        dbc.closeDBC();
-                
+        try {
+            dbc.getDBC();
+            dbc.EScore(sc);
+            dbc.closeDBC();
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(EditScoreP.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
+        int i = 0;
         tip.setEnabled(true);
-        tip.endEdit();
+        tip.endEdit(i);
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 

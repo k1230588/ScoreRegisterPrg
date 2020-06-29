@@ -344,6 +344,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="&#x30e6;&#x30fc;&#x30b6;&#x30fc;&#x7ba1;&#x7406;"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton2ActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel9">
       <Properties>

@@ -284,25 +284,136 @@ public class DBConn {
                 return rScore;
             }
         }
-        
+
 //        スコアを登録する
         sql = "insert into scorelist (sid, language, english, math, history, science, create_time, scid)";
         sql += "VALUES (" + usscore.getsID() + "," + usscore.getLanS() + "," + usscore.getEngS() + ",";
         sql += usscore.getMatS() + "," + usscore.getHisS() + "," + usscore.getSciS() + ",";
         sql += "current_timestamp, " + usscore.getScid() + ");";
         System.out.println(sql);
-        
+
         stmt.executeUpdate(sql);
         conn.commit();
-        
-        
 
         rScore = "Finished";
         return rScore;
     }
-    
-    public void EScore(UserScore sc){
 
-        
+    public void EScore(UserScore sc) throws SQLException {
+        String sql = "UPDATE scorelist SET ";
+        sql += "language = " + sc.getLanS() + ", ";
+        sql += "english = " + sc.getEngS() + ", ";
+        sql += "math = " + sc.getMatS() + ", ";
+        sql += "history = " + sc.getHisS() + ", ";
+        sql += "science = " + sc.getSciS() + ", ";
+        sql += " create_time=current_timestamp WHERE scid= " + sc.getScid() + ";";
+
+        stmt.executeUpdate(sql);
+        conn.commit();
     }
+
+    public List<UserInfo> userAll(UserInfo rui) throws SQLException {
+        List<UserInfo> list = new ArrayList();
+        String sql = null;
+
+//       登録者が権限を持っているか
+        switch (rui.getuAdmin()) {
+            case 1:
+                sql = "select * from ulist where uclass = " + rui.getuClass() + " and uadmin > 1;";
+                break;
+            case 0:
+                sql = "select * from ulist where (uadmin >0) or (uclass = " + rui.getuClass() + " and uadmin = 0);";
+                break;
+        }
+//        System.out.println(sql);
+        rset = stmt.executeQuery(sql);
+        if (rset != null) {
+            while (rset.next()) {
+                UserInfo ui = new UserInfo();
+                ui.setuID(rset.getInt("uid"));
+                ui.setuClass(rset.getInt("uclass"));
+                ui.setuName(rset.getString("uname"));
+                ui.setuPosi(rset.getString("uposi"));
+                ui.setuPass(rset.getString("upass"));
+                list.add(ui);
+            }
+        }
+        return list;
+    }
+
+    public List<UserInfo> SearchUL(int sio, UserInfo ui, UserInfo rui) throws SQLException {
+        List<UserInfo> list = new ArrayList();
+        List sqlList = new ArrayList();
+        String sql;
+
+        switch (sio) {
+//          　あいまい検索  
+            case 1:
+                if (ui.getuID() != 0) {
+                    sqlList.add("cast(uid as varchar(255)) like '%" + ui.getuID() + "%' ");
+                }
+                if (ui.getuClass() != 0) {
+                    sqlList.add("cast(uclass as varchar(255)) like '%" + ui.getuClass() + "%' ");
+                }
+                if (!ui.getuName().equals("null")) {
+                    sqlList.add("uname like '%" + ui.getuName() + "%' ");
+                }
+                break;
+//            完全一致
+            case 0:
+                if (ui.getuID() != 0) {
+                    sqlList.add("uid = " + ui.getuID() + " ");
+                }
+                if (ui.getuClass() != 0) {
+                    sqlList.add("uclass = " + ui.getuClass() + " ");
+                }
+                if (!ui.getuName().equals("null")) {
+                    sqlList.add("uname = '" + ui.getuName() + "' ");
+                }
+                break;
+            default:
+                return null;
+        }
+
+        sql = "select * from ulist where " + sqlList.get(0);
+        if (sqlList.size() > 1) {
+            for (int i = 1; i < sqlList.size(); i++) {
+                sql += "and " + sqlList.get(i);
+            }
+        }
+//        検索権限チェック
+        if (rui.getuAdmin() == 0) {
+            sql += ";";
+        } else {
+            sql += "and uclass = " + rui.getuClass() + ";";
+        }
+
+        rset = stmt.executeQuery(sql);
+        if (rset != null) {
+            while (rset.next()) {
+                UserInfo usi = new UserInfo();
+                usi.setuID(rset.getInt("uid"));
+                usi.setuClass(rset.getInt("uclass"));
+                usi.setuPosi(rset.getString("uposi"));
+                usi.setuName(rset.getString("uname"));
+                usi.setuPass(rset.getString("upass"));
+                list.add(usi);
+            }
+        }
+
+        return list;
+    }
+
+    public void DUser(int DeleteL) throws SQLException {
+        String sql = "delete from scorelist where sid = " + DeleteL + ";";
+        stmt.executeUpdate(sql);
+        conn.commit();
+        sql = "delete from stulist where sid = " + DeleteL + ";";
+        stmt.executeUpdate(sql);
+        conn.commit();
+        sql = "delete from ulist where uid = " + DeleteL + ";";
+        stmt.executeUpdate(sql);
+        conn.commit();
+    }
+
 }

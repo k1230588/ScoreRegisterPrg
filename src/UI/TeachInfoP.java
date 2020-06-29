@@ -36,7 +36,7 @@ public class TeachInfoP extends javax.swing.JFrame {
     public TeachInfoP(UserInfo rui) {
         initComponents();
         List<UserInfo> list = new ArrayList();
-        DBConn dbc = new DBConn();   
+        DBConn dbc = new DBConn();
         this.uID = rui.getuID();
 
         try {
@@ -227,6 +227,11 @@ public class TeachInfoP extends javax.swing.JFrame {
         });
 
         jButton2.setText("ユーザー管理");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jLabel9.setFont(new java.awt.Font("新細明體", 1, 19)); // NOI18N
         jLabel9.setText("データ検索");
@@ -741,13 +746,22 @@ public class TeachInfoP extends javax.swing.JFrame {
             usc.setSciS((int) model.getValueAt(i, 7));
             usc.setScid((long) model.getValueAt(i, 9));
             EditScoreP esp = new EditScoreP(usc, tip);
-                esp.setVisible(true);
-                this.setEnabled(false);
+            esp.setVisible(true);
+            this.setEnabled(false);
         } else {
             registerM.setText("Row not selected.");
         }
-        
+
     }//GEN-LAST:event_jButton8ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        UserInfo rui = gRUserI();
+        UserRegP urp = new UserRegP(rui);
+        urp.setVisible(true);
+//                this.setEnabled(false);
+
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     public UserInfo gRUserI() {
         UserInfo rui = new UserInfo();
@@ -760,6 +774,8 @@ public class TeachInfoP extends javax.swing.JFrame {
             list = dbc.getLoginInfo(rui.getuID());
             rui.setuClass(list.get(0).getuClass());
             rui.setuAdmin(list.get(0).getuAdmin());
+            rui.setuName(list.get(0).getuName());
+            rui.setuClass(list.get(0).getuClass());
             dbc.closeDBC();
         } catch (SQLException ex) {
             Logger.getLogger(TeachInfoP.class.getName()).log(Level.SEVERE, null, ex);
@@ -768,10 +784,16 @@ public class TeachInfoP extends javax.swing.JFrame {
         }
         return rui;
     }
-    
-    public void endEdit(){
+
+    public void endEdit(int i) {
         UserInfo rui = gRUserI();
         sList(rui);
+        switch (i) {
+            case 1:
+                registerM.setText("Score has been updated");
+            case 0:
+                registerM.setText("Request canceled");
+        }
     }
 
     /**
