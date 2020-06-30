@@ -21,6 +21,7 @@ import object.UserInfo;
 public class UserRegP extends javax.swing.JFrame {
 
     UserInfo rui;
+    TeachInfoP tip;
 
     /**
      * Creates new form UserRegP
@@ -29,9 +30,10 @@ public class UserRegP extends javax.swing.JFrame {
         initComponents();
     }
 
-    public UserRegP(UserInfo rui) {
+    public UserRegP(UserInfo rui, TeachInfoP tip) {
         initComponents();
         this.rui = rui;
+        this.tip = tip;
         UList();
 
     }
@@ -135,9 +137,19 @@ public class UserRegP extends javax.swing.JFrame {
 
         jButton2.setFont(new java.awt.Font("新細明體", 0, 13)); // NOI18N
         jButton2.setText("登録/変更");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setFont(new java.awt.Font("新細明體", 0, 13)); // NOI18N
         jButton3.setText("リセット");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jLabel7.setFont(new java.awt.Font("微軟正黑體", 0, 12)); // NOI18N
         jLabel7.setText("ID検索");
@@ -214,6 +226,11 @@ public class UserRegP extends javax.swing.JFrame {
 
         jButton7.setFont(new java.awt.Font("新細明體", 0, 13)); // NOI18N
         jButton7.setText("変更");
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
 
         jButton8.setFont(new java.awt.Font("新細明體", 0, 13)); // NOI18N
         jButton8.setText("再読込");
@@ -223,7 +240,7 @@ public class UserRegP extends javax.swing.JFrame {
             }
         });
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Select Position", "学生", "教師" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Select", "学生", "教師" }));
         jComboBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox1ActionPerformed(evt);
@@ -269,8 +286,8 @@ public class UserRegP extends javax.swing.JFrame {
                                             .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                         .addGap(18, 18, 18)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(jTextField2)
-                                            .addComponent(jTextField4, javax.swing.GroupLayout.DEFAULT_SIZE, 162, Short.MAX_VALUE)
+                                            .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 181, Short.MAX_VALUE)
+                                            .addComponent(jTextField4)
                                             .addComponent(jPasswordField1)
                                             .addComponent(jTextField1)
                                             .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -304,7 +321,7 @@ public class UserRegP extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(208, 208, 208)
                         .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 368, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(43, Short.MAX_VALUE))
+                .addContainerGap(24, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -374,6 +391,9 @@ public class UserRegP extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        int i = 2;
+        tip.setEnabled(true);
+        tip.endEdit(i);
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -384,6 +404,7 @@ public class UserRegP extends javax.swing.JFrame {
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
         // TODO add your handling code here:
+
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -410,20 +431,25 @@ public class UserRegP extends javax.swing.JFrame {
         }
 
 //        content取得
-        if (jTextField5.getText().isEmpty() && jTextField6.getText().isEmpty() && jTextField7.getText().isEmpty()) {
-            jLabel11.setText("Error: No content");
+        try {
+            if (jTextField5.getText().isEmpty() && jTextField6.getText().isEmpty() && jTextField7.getText().isEmpty()) {
+                jLabel11.setText("Error: No content");
+                return;
+            }
+            if (!jTextField5.getText().isEmpty()) {
+                ui.setuID(Integer.parseInt(jTextField5.getText()));
+            }
+            if (!jTextField6.getText().isEmpty()) {
+                ui.setuClass(Integer.parseInt(jTextField6.getText()));
+            }
+            if (!jTextField7.getText().isEmpty()) {
+                ui.setuName(jTextField7.getText());
+            } else {
+                ui.setuName("null");
+            }
+        } catch (NumberFormatException ex) {
+            jLabel11.setText("Formate Error");
             return;
-        }
-        if (!jTextField5.getText().isEmpty()) {
-            ui.setuID(Integer.parseInt(jTextField5.getText()));
-        }
-        if (!jTextField6.getText().isEmpty()) {
-            ui.setuClass(Integer.parseInt(jTextField6.getText()));
-        }
-        if (!jTextField7.getText().isEmpty()) {
-            ui.setuName(jTextField7.getText());
-        } else {
-            ui.setuName("null");
         }
 
         try {
@@ -463,6 +489,12 @@ public class UserRegP extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         int DeleteL;
 
+        int uid = (int) model.getValueAt(i, 0);
+        if (uid == rui.getuID()) {
+            jLabel11.setText("You can not delete yourself");
+            return;
+        }
+
         if (i != -1) {
             DeleteL = (int) model.getValueAt(i, 0);
 
@@ -475,7 +507,103 @@ public class UserRegP extends javax.swing.JFrame {
             }
         }
         UList();
+        jLabel11.setText("Delete Success");
     }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        UserInfo ui = new UserInfo();
+        DBConn dbc = new DBConn();
+        String posi = null;
+
+//        登録内容取得
+        if (jTextField1.getText().isEmpty() || jTextField2.getText().isEmpty() || jTextField4.getText().isEmpty() || jPasswordField1.getText().isEmpty()) {
+            jLabel11.setText("All fields are required");
+            return;
+        }
+
+//        登録権限チェック
+        if (rui.getuAdmin() == 1) {
+            if (jComboBox1.getSelectedItem() == "教師") {
+                jLabel11.setText("Not authorized");
+                return;
+            }
+
+            if (rui.getuClass() != Integer.parseInt(jTextField2.getText())) {
+                jLabel11.setText("Its not your class");
+                return;
+            }
+        }
+
+        try {
+            ui.setuID(Integer.parseInt(jTextField1.getText()));
+            ui.setuClass(Integer.parseInt(jTextField2.getText()));
+            ui.setuName(jTextField4.getText());
+            ui.setuPass(jPasswordField1.getText());
+            posi = String.valueOf(jComboBox1.getSelectedItem());
+        } catch (NumberFormatException ex) {
+            jLabel11.setText("Format Error");
+        }
+
+        switch (posi) {
+            case "教師":
+                ui.setuPosi(posi);
+                ui.setuAdmin(1);
+                break;
+            case "学生":
+                ui.setuPosi(posi);
+                ui.setuAdmin(2);
+                break;
+            default:
+                jLabel11.setText("Please choose position");
+                return;
+
+        }
+        int exc = 0;
+        try {
+            dbc.getDBC();
+            exc = dbc.UpUser(ui, rui);
+            dbc.closeDBC();
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(UserRegP.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        UList();
+        switch (exc) {
+            case 1:
+                jLabel11.setText("Update complete");
+                break;
+            case 0:
+                jLabel11.setText("New student register complete");
+                break;
+        }
+
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        jTextField1.setText(null);
+        jTextField2.setText(null);
+        jTextField4.setText(null);
+        jPasswordField1.setText(null);
+        jComboBox1.setSelectedItem("Select Position");
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        // TODO add your handling code here:
+        int i = jTable1.getSelectedRow();
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        if (i != -1) {
+            jTextField1.setText(String.valueOf(model.getValueAt(i, 0)));
+            jTextField2.setText(String.valueOf(model.getValueAt(i, 1)));
+            jTextField4.setText(String.valueOf(model.getValueAt(i, 3)));
+            jPasswordField1.setText(String.valueOf(model.getValueAt(i, 4)));
+            jComboBox1.setSelectedItem(String.valueOf(model.getValueAt(i, 2)));
+            jLabel11.setText(null);
+        } else {
+            jLabel11.setText("No row selected.");
+        }
+    }//GEN-LAST:event_jButton7ActionPerformed
 
     /**
      * @param args the command line arguments

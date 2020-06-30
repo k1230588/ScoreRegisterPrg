@@ -143,13 +143,18 @@ public class LoginPage extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        if (uidField.getText().isEmpty() || upassField.getText().isEmpty() ){
+        if (uidField.getText().isEmpty() || upassField.getText().isEmpty()) {
             jLabel3.setText("IDとパスワードを入力してください");
-        return;
-    }
+            return;
+        }
         UserInfo ui = new UserInfo();
-        ui.setuID(Integer.parseInt(uidField.getText()));
-        ui.setuPass(upassField.getText());
+        try {
+            ui.setuID(Integer.parseInt(uidField.getText()));
+            ui.setuPass(upassField.getText());
+        } catch (NumberFormatException ex) {
+            jLabel3.setText("Formate Error");
+            return;
+        }
         int Admin = 9;
 
         DBConn dbc = new DBConn();
@@ -161,8 +166,7 @@ public class LoginPage extends javax.swing.JFrame {
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(LoginPage.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        
+
         switch (Admin) {
             case 0:
                 TeachInfoP infop0 = new TeachInfoP(ui);

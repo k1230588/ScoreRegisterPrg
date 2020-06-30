@@ -63,8 +63,8 @@
                                       </Group>
                                       <EmptySpace type="separate" max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                          <Component id="jTextField2" alignment="0" max="32767" attributes="0"/>
-                                          <Component id="jTextField4" alignment="0" pref="162" max="32767" attributes="0"/>
+                                          <Component id="jTextField2" alignment="0" pref="181" max="32767" attributes="0"/>
+                                          <Component id="jTextField4" alignment="0" max="32767" attributes="0"/>
                                           <Component id="jPasswordField1" alignment="0" max="32767" attributes="0"/>
                                           <Component id="jTextField1" alignment="0" max="32767" attributes="0"/>
                                           <Component id="jComboBox1" min="-2" max="-2" attributes="0"/>
@@ -114,7 +114,7 @@
                       <Component id="jLabel11" min="-2" pref="368" max="-2" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace pref="43" max="32767" attributes="0"/>
+              <EmptySpace pref="24" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -261,6 +261,9 @@
         </Property>
         <Property name="text" type="java.lang.String" value="&#x767b;&#x9332;/&#x5909;&#x66f4;"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton2ActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="jButton3">
       <Properties>
@@ -269,6 +272,9 @@
         </Property>
         <Property name="text" type="java.lang.String" value="&#x30ea;&#x30bb;&#x30c3;&#x30c8;"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton3ActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel7">
       <Properties>
@@ -396,6 +402,9 @@
         </Property>
         <Property name="text" type="java.lang.String" value="&#x5909;&#x66f4;"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton7ActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="jButton8">
       <Properties>
@@ -428,7 +437,7 @@
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
           <StringArray count="3">
-            <StringItem index="0" value="Select Position"/>
+            <StringItem index="0" value="Select"/>
             <StringItem index="1" value="&#x5b66;&#x751f;"/>
             <StringItem index="2" value="&#x6559;&#x5e2b;"/>
           </StringArray>

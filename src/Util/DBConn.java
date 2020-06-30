@@ -319,7 +319,7 @@ public class DBConn {
 //       登録者が権限を持っているか
         switch (rui.getuAdmin()) {
             case 1:
-                sql = "select * from ulist where uclass = " + rui.getuClass() + " and uadmin > 1;";
+                sql = "select * from ulist where uclass = " + rui.getuClass() + " and (uadmin > 1 or uposi = '教師');";
                 break;
             case 0:
                 sql = "select * from ulist where (uadmin >0) or (uclass = " + rui.getuClass() + " and uadmin = 0);";
@@ -416,4 +416,51 @@ public class DBConn {
         conn.commit();
     }
 
+    public int UpUser(UserInfo ui, UserInfo rui) throws SQLException {
+        List<UserInfo> list = new ArrayList();
+        int exc = 0;
+        String sql;
+
+//       ユーザーが存在するか確認
+        sql = "select * from ulist where uid = " + ui.getuID() + " ;";
+        rset = stmt.executeQuery(sql);
+        if (rset != null) {
+            while (rset.next()) {
+                if (!rset.getString("uname").isEmpty()) {
+                    exc = 1; //既存
+                } else {
+                    exc = 0; //新規
+                }
+            }
+        }
+
+        switch (exc) {
+            case 1:
+                sql = "update ulist ";
+                sql += "set uname= '" + ui.getuName() + "', upass= '" + ui.getuPass() + "', uclass= " + ui.getuClass() + ", ";
+                sql += "uposi= '" + ui.getuPosi() + "', uadmin= " + ui.getuAdmin() + ", create_time = current_timestamp ";
+                sql += "where uid = " + ui.getuID() + " ;";
+                System.out.println(sql);
+                stmt.executeUpdate(sql);
+                conn.commit();
+                sql = "update stulist set sname= '" + ui.getuName() + "', sclass= " + ui.getuClass() + ", ";
+                sql += "create_time = current_timestamp where sid = " + ui.getuID() + ";";
+                System.out.println(sql);
+                stmt.executeUpdate(sql);
+                conn.commit();
+                break;
+            case 0:
+                sql = "insert into ulist values( " + ui.getuID() + ", '" + ui.getuName() + "', '" + ui.getuPass() + "', " + ui.getuClass();
+                sql += ", '" + ui.getuPosi() + "', " + ui.getuAdmin() + ", current_timestamp );";
+                System.out.println(sql);
+                stmt.executeUpdate(sql);
+                conn.commit();
+                sql = "insert into stulist values( " + ui.getuID() + ", '" + ui.getuName() + "', " + ui.getuClass() + ", '', current_date, current_timestamp );";
+                System.out.println(sql);
+                stmt.executeUpdate(sql);
+                conn.commit();
+                break;
+        }
+        return exc;
+    }
 }

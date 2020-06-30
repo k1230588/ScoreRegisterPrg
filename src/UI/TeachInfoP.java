@@ -601,14 +601,19 @@ public class TeachInfoP extends javax.swing.JFrame {
         int sIO;
         int ruiclass = gRUserI().getuClass();
 
-        if (!jTextField1.getText().isEmpty()) {
-            ui.setuID(Integer.parseInt(jTextField1.getText()));
+        try {
+            if (!jTextField1.getText().isEmpty()) {
+                ui.setuID(Integer.parseInt(jTextField1.getText()));
+            }
+            if (!jTextField2.getText().isEmpty()) {
+                ui.setuName(jTextField2.getText());
+            } else {
+                ui.setuName("null");
+            }
+        } catch (NumberFormatException ex) {
+            searchM.setText("Format error");
         }
-        if (!jTextField2.getText().isEmpty()) {
-            ui.setuName(jTextField2.getText());
-        } else {
-            ui.setuName("null");
-        }
+
         if (jTextField1.getText().isEmpty() && jTextField2.getText().isEmpty()) {
             searchM.setText("Error: No content");
             UserInfo rui = gRUserI();
@@ -705,13 +710,17 @@ public class TeachInfoP extends javax.swing.JFrame {
         UserScore usc = new UserScore();
         DBConn dbc = new DBConn();
 
-        usc.setsID(Integer.parseInt(jTextField3.getText()));
-        usc.setLanS(Integer.parseInt(lans.getText()));
-        usc.setEngS(Integer.parseInt(engs.getText()));
-        usc.setMatS(Integer.parseInt(mats.getText()));
-        usc.setHisS(Integer.parseInt(hiss.getText()));
-        usc.setSciS(Integer.parseInt(scis.getText()));
-
+        try {
+            usc.setsID(Integer.parseInt(jTextField3.getText()));
+            usc.setLanS(Integer.parseInt(lans.getText()));
+            usc.setEngS(Integer.parseInt(engs.getText()));
+            usc.setMatS(Integer.parseInt(mats.getText()));
+            usc.setHisS(Integer.parseInt(hiss.getText()));
+            usc.setSciS(Integer.parseInt(scis.getText()));
+        } catch (NumberFormatException ex) {
+            registerM.setText("Format error");
+            return;
+        }
         try {
             dbc.getDBC();
             String rScore = dbc.RScore(usc, rui);
@@ -732,7 +741,6 @@ public class TeachInfoP extends javax.swing.JFrame {
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
         // TODO add your handling code here:
         int i = listTable.getSelectedRow();
-        this.tip = tip;
         UserScore usc = new UserScore();
         DefaultTableModel model = (DefaultTableModel) listTable.getModel();
         if (i != -1) {
@@ -757,9 +765,9 @@ public class TeachInfoP extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         UserInfo rui = gRUserI();
-        UserRegP urp = new UserRegP(rui);
+        UserRegP urp = new UserRegP(rui, tip);
         urp.setVisible(true);
-//                this.setEnabled(false);
+        this.setEnabled(false);
 
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -791,8 +799,13 @@ public class TeachInfoP extends javax.swing.JFrame {
         switch (i) {
             case 1:
                 registerM.setText("Score has been updated");
+                break;
             case 0:
                 registerM.setText("Request canceled");
+                break;
+            case 2:
+                registerM.setText(null);
+                break;
         }
     }
 

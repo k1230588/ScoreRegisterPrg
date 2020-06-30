@@ -70,6 +70,7 @@ public class EditScoreP extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jLabel12 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setAlwaysOnTop(true);
@@ -137,6 +138,8 @@ public class EditScoreP extends javax.swing.JFrame {
 
         jLabel13.setText("scid+");
 
+        jLabel14.setForeground(new java.awt.Color(255, 0, 0));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -183,7 +186,10 @@ public class EditScoreP extends javax.swing.JFrame {
                         .addGap(60, 60, 60)
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(45, 45, 45)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(120, 120, 120)
+                        .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(20, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -219,11 +225,13 @@ public class EditScoreP extends javax.swing.JFrame {
                     .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, 22, Short.MAX_VALUE)
+                .addGap(11, 11, 11)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2))
-                .addGap(20, 20, 20))
+                .addGap(15, 15, 15))
         );
 
         pack();
@@ -243,15 +251,20 @@ public class EditScoreP extends javax.swing.JFrame {
         // TODO add your handling code here:
         DBConn dbc = new DBConn();
         UserScore sc = new UserScore();
-        sc.setsID(Integer.parseInt(jLabel9.getText()));
-        sc.setsClass(Integer.parseInt(jLabel10.getText()));
-        sc.setsName(jLabel11.getText());
-        sc.setLanS(Integer.parseInt(jTextField1.getText()));
-        sc.setEngS(Integer.parseInt(jTextField2.getText()));
-        sc.setMatS(Integer.parseInt(jTextField3.getText()));
-        sc.setHisS(Integer.parseInt(jTextField4.getText()));
-        sc.setSciS(Integer.parseInt(jTextField5.getText()));
-        sc.setScid(Integer.parseInt(jLabel13.getText()));
+        try {
+            sc.setsID(Integer.parseInt(jLabel9.getText()));
+            sc.setsClass(Integer.parseInt(jLabel10.getText()));
+            sc.setsName(jLabel11.getText());
+            sc.setLanS(Integer.parseInt(jTextField1.getText()));
+            sc.setEngS(Integer.parseInt(jTextField2.getText()));
+            sc.setMatS(Integer.parseInt(jTextField3.getText()));
+            sc.setHisS(Integer.parseInt(jTextField4.getText()));
+            sc.setSciS(Integer.parseInt(jTextField5.getText()));
+            sc.setScid(Integer.parseInt(jLabel13.getText()));
+        } catch (NumberFormatException ex) {
+            jLabel14.setText("Format Error");
+            return;
+        }
 
         try {
             dbc.getDBC();
@@ -260,8 +273,8 @@ public class EditScoreP extends javax.swing.JFrame {
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(EditScoreP.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        int i = 0;
+
+        int i = 1;
         tip.setEnabled(true);
         tip.endEdit(i);
         this.dispose();
@@ -310,6 +323,7 @@ public class EditScoreP extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
